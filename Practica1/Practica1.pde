@@ -2,7 +2,7 @@ float dt = 0.1;
 PVector target;
 Boid a;
 void setup() {
-  size(600,600);
+  size(900,600);
   a = new Boid();
 }
 

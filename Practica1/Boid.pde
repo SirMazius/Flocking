@@ -5,14 +5,20 @@ class Boid {
     pos = new PVector(width/2, height/2);
     vel = new PVector(0,0);
     acc = new PVector(0,0);
-    max_force = 10;
-    max_vel = 100;
-    mass = 2;
+    max_force = 20;
+    max_vel = 40;
+    mass = 1.5;
     r = 6;
   }
   
   void steer(PVector target) {
     PVector desired = PVector.sub(target,pos);
+    if (desired.mag() < 100) {
+      float v = map(desired.mag(), 0, 300, 0, max_vel);
+      desired.setMag(v);
+    } else {
+      desired.setMag(max_vel);
+    }
     PVector steer = PVector.sub(desired, vel);
     steer.limit(max_force);
     add_force(steer);
@@ -29,7 +35,7 @@ class Boid {
   }
   void display() {
     float theta = vel.heading() + PI/2;
-    fill(127);
+    fill(170, 0, 162);
     stroke(0);
     strokeWeight(1);
     translate(pos.x, pos.y);
