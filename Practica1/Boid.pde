@@ -24,15 +24,14 @@ class Boid {
   
   void update() {
     vel = PVector.add(vel, PVector.mult(acc,dt));
-    //pos = PVector.add(pos, PVector.mult(vel,dt));
+    pos = PVector.add(pos, PVector.mult(vel,dt));
     acc.set(0,0,0);
   }
   void display() {
-    float theta = vel.heading2D() + PI/2;
+    float theta = vel.heading() + PI/2;
     fill(127);
     stroke(0);
     strokeWeight(1);
-    pushMatrix();
     translate(pos.x, pos.y);
     rotate(theta);
     beginShape();
@@ -40,6 +39,5 @@ class Boid {
     vertex(-r, r*2);
     vertex(r, r*2);
     endShape(CLOSE);
-    popMatrix();
   }
 }
