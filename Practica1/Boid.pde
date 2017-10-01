@@ -12,6 +12,10 @@ class Boid {
     r = 6;
   }
   
+  void pursue() {
+    
+  }
+  
   void seek(PVector target) {
     PVector desired = PVector.sub(target,pos);
     //if (desired.mag() < 100)
@@ -24,15 +28,9 @@ class Boid {
     add_force(seek);
   }
   
-  void flee(PVector target) {
-    //seek(PVector.sub(pos,target));
-    if (PVector.dist(pos,target) < 350) {
-      PVector desired = PVector.sub(pos, target);
-      desired.setMag(max_vel);
-      PVector seek = PVector.sub(desired, vel);
-      seek.limit(max_force);
-      add_force(seek);
-    }
+  void flee(PVector target) {  
+    if (PVector.dist(pos,target) < 350)
+      seek(PVector.add(pos,PVector.sub(pos,target)));  
   }
   
   void add_force(PVector f) {

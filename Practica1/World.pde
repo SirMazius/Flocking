@@ -4,12 +4,12 @@ class World {
   Boid a,b;
   World() {
     l_boids = new ArrayList<Boid>();
-    a = new Boid(352,555, new PVector(0,0),35,10);
+    a = new Boid(352,555, new PVector(0,0),35,50);
     b = new Boid(700,300, new PVector(0,0),15,20);
   }
   
   void update() {
-    a.seek(b.pos);
+    a.seek(target);
     b.flee(a.pos);
     bounders(b);
     b.update();
