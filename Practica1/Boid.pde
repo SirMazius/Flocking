@@ -23,11 +23,17 @@ class Boid {
   }
   
   PVector pred_pos(Boid b) {
-    float k = 5000;
-    float t_lim = 10;
+    float k = 0.01;
+    float t_lim = 5;
     //float t = k * PVector.dist(b.pos, pos) / (b.vel.mag() + vel.mag());
-    float t = k / PVector.dist(b.pos,pos);
-    t = t < t_lim ? t : t_lim;
+    float t = k * PVector.dist(b.pos,pos);
+    //t = t < t_lim ? t : t_lim;
+    if (t > t_lim) {
+      print(t + "LA T \n");
+    } else {print(t + "LA t_lim \n");
+      t = t_lim;
+      
+    }
     PVector pred_pos = PVector.add(b.pos, PVector.mult(b.vel,t));
     //print(t+"\n");
     ellipse(pred_pos.x, pred_pos.y, 10, 10);

@@ -5,7 +5,7 @@ class World {
   World() {
     l_boids = new ArrayList<Boid>();
     a = new Boid(500,500, new PVector(0,0),10,40);
-    b = new Boid(750,100, new PVector(0,0),15,20);
+    b = new Boid(width -100,100, new PVector(0,0),15,20);
   }
   
   void update() {
