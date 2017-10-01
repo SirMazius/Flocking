@@ -4,13 +4,14 @@ class World {
   Boid a,b;
   World() {
     l_boids = new ArrayList<Boid>();
-    a = new Boid(352,555, new PVector(0,0),35,50);
-    b = new Boid(700,300, new PVector(0,0),15,20);
+    a = new Boid(500,500, new PVector(0,0),10,40);
+    b = new Boid(750,100, new PVector(0,0),15,20);
   }
   
   void update() {
-    a.seek(target);
-    b.flee(a.pos);
+    a.pursue(b);
+    //a.pred_pos(b);
+    b.seek(target);
     bounders(b);
     b.update();
     a.update();

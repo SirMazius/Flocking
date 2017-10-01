@@ -1,6 +1,7 @@
 class Boid {
   PVector pos,vel,acc;
   float mass, max_vel, max_force, r;
+  ArrayList<Boid> l_boids;
   Boid(float x, float y, PVector _vel, float _max_vel,float _max_force) {
     pos = new PVector(x, y);
     vel = _vel;
@@ -10,10 +11,27 @@ class Boid {
     max_force = _max_force;
     mass = 5.5;
     r = 6;
+    l_boids = new ArrayList<Boid>();
   }
   
-  void pursue() {
-    
+  void pursue(Boid target) {
+    seek(pred_pos(target));
+  }
+  
+  void evade() {
+  
+  }
+  
+  PVector pred_pos(Boid b) {
+    float k = 5000;
+    float t_lim = 10;
+    //float t = k * PVector.dist(b.pos, pos) / (b.vel.mag() + vel.mag());
+    float t = k / PVector.dist(b.pos,pos);
+    t = t < t_lim ? t : t_lim;
+    PVector pred_pos = PVector.add(b.pos, PVector.mult(b.vel,t));
+    //print(t+"\n");
+    ellipse(pred_pos.x, pred_pos.y, 10, 10);
+    return(pred_pos);
   }
   
   void seek(PVector target) {
@@ -26,6 +44,7 @@ class Boid {
     PVector seek = PVector.sub(desired, vel);
     seek.limit(max_force);
     add_force(seek);
+    line(target.x, target.y, pos.x,pos.y);
   }
   
   void flee(PVector target) {  

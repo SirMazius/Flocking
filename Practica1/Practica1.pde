@@ -2,7 +2,7 @@ float dt = 0.2;
 PVector target;
 World a;
 void setup() {
-  size(800,800);
+  size(1800,800);
   a = new World();
 }
 
