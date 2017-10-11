@@ -2,9 +2,10 @@ class Boid {
   
   PVector pos,vel,acc;
   float mass, max_vel, max_force, r;
-  ArrayList<Boid> l_boids;
+  float cohesion, separation, aligment = 1;
+  //ArrayList<Boid> l_boids;
   
-  Boid(float x, float y, PVector _vel, float _max_vel,float _max_force, ArrayList<Boid> _l_boids) {
+  Boid(float x, float y, PVector _vel, float _max_vel,float _max_force) {
     pos = new PVector(x, y);
     vel = _vel;
     acc = new PVector(0,0);
@@ -13,10 +14,11 @@ class Boid {
     max_force = _max_force;
     mass = 5.5;
     r = 6;
-    l_boids = _l_boids;
+    //l_boids = _l_boids;
   }
   
-  void seek(PVector target) {
+  //Mult es un valor para los pesos 
+  void seek(PVector target, float mult) {
     PVector desired = PVector.sub(target,pos);
     //if (desired.mag() < 100)
     //  desired.setMag(map(desired.mag(), 0, 300, 0, max_vel));
@@ -25,25 +27,31 @@ class Boid {
     desired.setMag(max_vel);
     PVector seek = PVector.sub(desired, vel);
     seek.limit(max_force);
-    add_force(seek);
+    add_force(PVector.mult(seek, mult));
     line(target.x, target.y, pos.x,pos.y);
   }
   
-  void flee(PVector target) {  
+  void flee(PVector target, float mult) {  
     if (PVector.dist(pos,target) < 350)
-      seek(PVector.add(pos,PVector.sub(pos,target)));  
+      seek(PVector.add(pos,PVector.sub(pos,target)), mult);  
+  }
+  
+  void flock() {
+    separate(separation);
+    cohesion(cohesion);
+    align(aligment);
   }
   
   void pursue(Boid target) {
-    seek(pred_pos(target));
+    seek(pred_pos(target), 1);
   }
   
   void evade(Boid target) {
     line(pos.x,pos.y,pred_pos(target).x,pred_pos(target).y);
-    flee(pred_pos(target));
+    flee(pred_pos(target), 1);
   }
   
-  void separate() {
+  void separate(float mult) {
     float separation = 25; 
     PVector steer = new PVector(0,0,0);
     
@@ -58,10 +66,10 @@ class Boid {
     }
     
     steer.setMag(max_vel);
-    seek(PVector.add(pos,steer));
+    seek(PVector.add(pos,steer), mult);
   }
   
-  void cohesion() {
+  void cohesion(float mult) {
     float dist_max = 75; 
     PVector suma_pos = new PVector(0,0);
     float count = 0;
@@ -71,10 +79,10 @@ class Boid {
         count++;
       }
       if (count > 0) 
-        seek(PVector.div(suma_pos,count));
+        seek(PVector.div(suma_pos,count), mult);
   }
   
-  void align() {
+  void align(float mult) {
     float dist_max = 75; //Distancia maxima a la que se alinearan
     PVector suma_vel = new PVector(0,0);
     
@@ -83,7 +91,7 @@ class Boid {
         suma_vel.add(b.pos);
     
       suma_vel.setMag(max_vel); //normaliza y multiplica la velocidad resultante por la velocidad maxima
-      seek(PVector.add(suma_vel, pos));
+      seek(PVector.add(suma_vel, pos), mult);
   }
   
   // Calcula la posicion en la que estara un objeto en un determinado instante
@@ -104,10 +112,6 @@ class Boid {
     return(pred_pos);
   }
   
-  
-  
-  
-  
   void add_force(PVector f) {
     acc.add(PVector.div(f,mass));
   }
@@ -118,6 +122,7 @@ class Boid {
     pos = PVector.add(pos, PVector.mult(vel,dt));
     acc.set(0,0,0);
   }
+  
   void display() {
     float theta = vel.heading() + PI/2;
     //fill(170, 0, 162);
