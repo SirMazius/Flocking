@@ -1,10 +1,10 @@
-float dt = 0.2;
+float dt = 0.1;
 PVector target;
 ArrayList<Boid> l_boids;
 World a;
 void setup() {
   l_boids = new ArrayList<Boid>();
-  size(1000,500);
+  size(1200,600);
   a = new World();
 }
 

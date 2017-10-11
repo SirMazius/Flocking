@@ -4,14 +4,14 @@ class World {
   Boid a,b;
   World() {
     //l_boids = new ArrayList<Boid>();
-    a = new Boid(300,300, new PVector(0,0),10,40);
-    b = new Boid(width -100,100, new PVector(0,0),15,20);
+    //a = new Boid(300,300, new PVector(0,0),10,40);
+    //b = new Boid(width -100,100, new PVector(0,0),15,20);
     
-    for (int i = 0; i < 20; i++) {
-      PVector vel = new PVector(random(-1,1),random(-1,1));
-      Boid c = new Boid(250,250, vel,10,40);
-      l_boids.add(c);
-    }
+    //for (int i = 0; i < 20; i++) {
+    //  PVector vel = new PVector(random(-1,1),random(-1,1));
+    //  Boid c = new Boid(250,250, vel,10,5);
+    //  l_boids.add(c);
+    //}
     
   }
   
@@ -23,18 +23,23 @@ class World {
     //bounders(a);
     //b.update();
     //a.update();
-    
-    
+    for (Boid b : l_boids) {
+      b.flock();
+      b.update();
+      bounders(b);
+    }
   }
   
   void display() {
-    fill(0);
-    a.display();
-    fill(255);
-    b.display();
+    
     for (Boid b : l_boids) {
       b.display();
     }
+    //fill(0);
+    //a.display();
+    //fill(255);
+    //b.display();
+    
   }
   
   void bounders(Boid b) {
@@ -51,8 +56,8 @@ class World {
   }
   
   void add_boid() {
-    PVector vel = new PVector(random(-1,1),random(-1,1));
-    Boid c = new Boid(mouseX, mouseY,vel,10,10);
+    PVector vel = new PVector(random(-5,5),random(-5,5));
+    Boid c = new Boid(mouseX, mouseY,vel,30,10);
     l_boids.add(c);
   }
   

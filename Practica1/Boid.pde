@@ -10,10 +10,13 @@ class Boid {
     vel = _vel;
     acc = new PVector(0,0);
     
+    separation = 2;
+    cohesion = 1;
+    aligment = 1;
     max_vel = _max_vel;
     max_force = _max_force;
     mass = 5.5;
-    r = 6;
+    r = 3;
     //l_boids = _l_boids;
   }
   
@@ -37,9 +40,9 @@ class Boid {
   }
   
   void flock() {
+    //cohesion(cohesion);
     separate(separation);
-    cohesion(cohesion);
-    align(aligment);
+    //align(aligment);
   }
   
   void pursue(Boid target) {
@@ -52,7 +55,7 @@ class Boid {
   }
   
   void separate(float mult) {
-    float separation = 25; 
+    float separation = 35; 
     PVector steer = new PVector(0,0,0);
     
     for (Boid b: l_boids) {
@@ -60,13 +63,13 @@ class Boid {
       if ( distance < separation && distance > 0) {
         PVector dist = PVector.sub(b.pos,pos);
         dist.normalize();
-        dist.div(distance);
+        //dist.div(distance);
         steer.add(dist);
       }
     }
     
     steer.setMag(max_vel);
-    seek(PVector.add(pos,steer), mult);
+    flee(PVector.add(pos,steer), mult);
   }
   
   void cohesion(float mult) {
@@ -83,15 +86,15 @@ class Boid {
   }
   
   void align(float mult) {
-    float dist_max = 75; //Distancia maxima a la que se alinearan
+    float dist_max = 50; //Distancia maxima a la que se alinearan
     PVector suma_vel = new PVector(0,0);
-    
     for (Boid b : l_boids)
-      if (PVector.dist(pos,b.pos) < dist_max)
-        suma_vel.add(b.pos);
+      if (PVector.dist(pos, b.pos) < dist_max)
+        suma_vel.add(b.vel);
+
+    suma_vel.setMag(max_vel); //normaliza y multiplica la velocidad resultante por la velocidad maxima
+    seek(PVector.add(suma_vel, pos), mult);
     
-      suma_vel.setMag(max_vel); //normaliza y multiplica la velocidad resultante por la velocidad maxima
-      seek(PVector.add(suma_vel, pos), mult);
   }
   
   // Calcula la posicion en la que estara un objeto en un determinado instante
