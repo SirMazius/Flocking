@@ -40,9 +40,9 @@ class Boid {
   }
   
   void flock() {
-    //cohesion(cohesion);
+    cohesion(cohesion);
     separate(separation);
-    //align(aligment);
+    align(aligment);
   }
   
   void pursue(Boid target) {
@@ -55,7 +55,8 @@ class Boid {
   }
   
   void separate(float mult) {
-    float separation = 35; 
+    float separation = 35;
+    float count = 0;
     PVector steer = new PVector(0,0,0);
     
     for (Boid b: l_boids) {
@@ -65,11 +66,14 @@ class Boid {
         dist.normalize();
         //dist.div(distance);
         steer.add(dist);
+        count ++;
       }
     }
     
+    if (count > 0) {
     steer.setMag(max_vel);
     flee(PVector.add(pos,steer), mult);
+    }
   }
   
   void cohesion(float mult) {
@@ -77,7 +81,7 @@ class Boid {
     PVector suma_pos = new PVector(0,0);
     float count = 0;
     for (Boid b : l_boids)
-      if (PVector.dist(pos,b.pos) < dist_max && PVector.dist(pos,b.pos) > 5) {
+      if (PVector.dist(pos,b.pos) < dist_max && PVector.dist(pos,b.pos) > 15  ) {
         suma_pos.add(b.pos);
         count++;
       }

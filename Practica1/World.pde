@@ -57,7 +57,7 @@ class World {
   
   void add_boid() {
     PVector vel = new PVector(random(-5,5),random(-5,5));
-    Boid c = new Boid(mouseX, mouseY,vel,30,10);
+    Boid c = new Boid(mouseX, mouseY,vel,15,10);
     l_boids.add(c);
   }
   
