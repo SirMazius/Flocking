@@ -5,7 +5,7 @@ class Boid {
   float cohesion, separation, aligment = 1;
   //ArrayList<Boid> l_boids;
 
-  Boid(float x, float y, PVector _vel, float _max_vel, float _max_force) {
+  Boid(float x, float y, PVector _vel, float _max_vel, float _max_force, float tam) {
     pos = new PVector(x, y);
     vel = _vel;
     acc = new PVector(0, 0);
@@ -16,7 +16,7 @@ class Boid {
     max_vel = _max_vel;
     max_force = _max_force;
     mass = 5.5;
-    r = 3;
+    r = tam;
     //l_boids = _l_boids;
   }
 
@@ -32,6 +32,17 @@ class Boid {
     seek.limit(max_force);
     add_force(PVector.mult(seek, mult));
     //line(target.x, target.y, pos.x, pos.y);
+  }
+  
+  void arrive(PVector target) {
+    PVector desired = PVector.sub(target, pos);
+    if (desired.mag() < 200)
+      desired.setMag(map(desired.mag(), 0, 500, 0, max_vel));
+    else
+      desired.setMag(max_vel);
+    PVector seek = PVector.sub(desired, vel);
+    seek.limit(max_force);
+    add_force(PVector.mult(seek, 1));
   }
 
   void flee(PVector target, float mult) {  
@@ -50,7 +61,7 @@ class Boid {
   }
 
   void evade(Boid target) {
-    line(pos.x, pos.y, pred_pos(target).x, pred_pos(target).y);
+    //line(pos.x, pos.y, pred_pos(target).x, pred_pos(target).y);
     flee(pred_pos(target), 1);
   }
 
@@ -114,7 +125,6 @@ class Boid {
       t = t_lim;
     }
     PVector pred_pos = PVector.add(b.pos, PVector.mult(b.vel, t));
-    //print(t+"\n");
     ellipse(pred_pos.x, pred_pos.y, 10, 10);
     return(pred_pos);
   }
@@ -131,7 +141,6 @@ class Boid {
   }
 
   void display() {
-    //noFill();
     float theta = vel.heading() + PI/2;
     //fill(170, 0, 162);
     stroke(0);
