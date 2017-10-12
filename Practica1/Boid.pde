@@ -10,7 +10,7 @@ class Boid {
     vel = _vel;
     acc = new PVector(0, 0);
 
-    separation = 6;
+    separation =10;
     cohesion = 1;
     aligment = 1;
     max_vel = _max_vel;
