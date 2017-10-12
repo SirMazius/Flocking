@@ -150,12 +150,17 @@ class World {
   void flee() {
     fill(255);
     text("FLEE", 30, 40);
-    a.flee(new PVector(mouseX, mouseY), 1);
+    b.seek(new PVector(mouseX, mouseY), 1);
+    a.flee(b.pos, 1);
     fill(100);
     ellipse(mouseX, mouseY, 30, 30);
     a.update();
+    b.update();
     bounders(a);
+    bounders(b);
     a.display();
+    fill(255);
+    b.display();
   }
 
   void pursue() {
