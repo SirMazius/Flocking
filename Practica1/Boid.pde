@@ -10,9 +10,10 @@ class Boid {
     vel = _vel;
     acc = new PVector(0,0);
     
-    separation = 2;
-    cohesion = 1;
+    separation = 2.5;
+    cohesion = 0.8;
     aligment = 1;
+    
     max_vel = _max_vel;
     max_force = _max_force;
     mass = 5.5;
@@ -31,7 +32,7 @@ class Boid {
     PVector seek = PVector.sub(desired, vel);
     seek.limit(max_force);
     add_force(PVector.mult(seek, mult));
-    line(target.x, target.y, pos.x,pos.y);
+    //line(target.x, target.y, pos.x,pos.y);
   }
   
   void flee(PVector target, float mult) {  
@@ -55,13 +56,13 @@ class Boid {
   }
   
   void separate(float mult) {
-    float separation = 35;
+    float separation = 25;
     float count = 0;
     PVector steer = new PVector(0,0,0);
     
     for (Boid b: l_boids) {
       float distance = PVector.dist(b.pos,pos);
-      if ( distance < separation && distance > 0) {
+      if ( distance < separation && distance >= 0) {
         PVector dist = PVector.sub(b.pos,pos);
         dist.normalize();
         //dist.div(distance);
@@ -71,8 +72,8 @@ class Boid {
     }
     
     if (count > 0) {
-    steer.setMag(max_vel);
-    flee(PVector.add(pos,steer), mult);
+      steer.setMag(max_vel);
+      flee(PVector.add(pos,steer), mult);
     }
   }
   
