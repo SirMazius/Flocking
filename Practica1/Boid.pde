@@ -10,7 +10,7 @@ class Boid {
     vel = _vel;
     acc = new PVector(0, 0);
 
-    separation = 4;
+    separation =10;
     cohesion = 1;
     aligment = 1;
     max_vel = _max_vel;
@@ -31,18 +31,18 @@ class Boid {
     PVector seek = PVector.sub(desired, vel);
     seek.limit(max_force);
     add_force(PVector.mult(seek, mult));
-    line(target.x, target.y, pos.x, pos.y);
+    //line(target.x, target.y, pos.x, pos.y);
   }
 
   void flee(PVector target, float mult) {  
-    if (PVector.dist(pos, target) < 350)
+    if (PVector.dist(pos, target) < 150) //350
       seek(PVector.add(pos, PVector.sub(pos, target)), mult);
   }
 
-  void flock() {
-    cohesion(cohesion);
-    separate(separation);
-    align(aligment);
+  void flock(ArrayList<Boid> l_boid) {
+    cohesion(cohesion, l_boid);
+    separate(separation, l_boid);
+    align(aligment, l_boid);
   }
 
   void pursue(Boid target) {
@@ -54,14 +54,14 @@ class Boid {
     flee(pred_pos(target), 1);
   }
 
-  void separate(float mult) {
-    float separation = 35;
+  void separate(float mult, ArrayList<Boid> l_boids) {
+    float separation = 45;
     float count = 0;
     PVector steer = new PVector(0, 0, 0);
 
     for (Boid b : l_boids) {
       float distance = PVector.dist(b.pos, pos);
-      if ( distance < separation && distance > 0) {
+      if ( distance < separation && distance > 0 && distance < 250) {
         PVector dist = PVector.sub(b.pos, pos);
         dist.normalize();
         //dist.div(distance);
@@ -76,7 +76,7 @@ class Boid {
     }
   }
 
-  void cohesion(float mult) {
+  void cohesion(float mult, ArrayList<Boid> l_boids) {
     float dist_max = 75; 
     PVector suma_pos = new PVector(0, 0);
     float count = 0;
@@ -89,7 +89,7 @@ class Boid {
       seek(PVector.div(suma_pos, count), mult);
   }
 
-  void align(float mult) {
+  void align(float mult, ArrayList<Boid> l_boids) {
     float dist_max = 50; //Distancia maxima a la que se alinearan
     PVector suma_vel = new PVector(0, 0);
     for (Boid b : l_boids)
@@ -131,6 +131,7 @@ class Boid {
   }
 
   void display() {
+    //noFill();
     float theta = vel.heading() + PI/2;
     //fill(170, 0, 162);
     stroke(0);
