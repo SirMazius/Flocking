@@ -3,7 +3,6 @@ class Boid {
   PVector pos, vel, acc;
   float mass, max_vel, max_force, r;
   float cohesion, separation, aligment = 1;
-  //ArrayList<Boid> l_boids;
 
   Boid(float x, float y, PVector _vel, float _max_vel, float _max_force, float tam) {
     pos = new PVector(x, y);
@@ -17,23 +16,19 @@ class Boid {
     max_force = _max_force;
     mass = 5.5;
     r = tam;
-    //l_boids = _l_boids;
   }
 
   //Mult es un valor para los pesos 
   void seek(PVector target, float mult) {
     PVector desired = PVector.sub(target, pos);
-    //if (desired.mag() < 100)
-    //  desired.setMag(map(desired.mag(), 0, 300, 0, max_vel));
-    //else
-    //  desired.setMag(max_vel);
     desired.setMag(max_vel);
     PVector seek = PVector.sub(desired, vel);
     seek.limit(max_force);
     add_force(PVector.mult(seek, mult));
-    //line(target.x, target.y, pos.x, pos.y);
+    if (debug)
+      line(pos.x, pos.y, target.x, target.y);
   }
-  
+
   void arrive(PVector target) {
     PVector desired = PVector.sub(target, pos);
     if (desired.mag() < 200)
@@ -43,6 +38,8 @@ class Boid {
     PVector seek = PVector.sub(desired, vel);
     seek.limit(max_force);
     add_force(PVector.mult(seek, 1));
+    if (debug)
+      line(pos.x, pos.y, target.x, target.y);
   }
 
   void flee(PVector target, float mult) {  
@@ -61,7 +58,8 @@ class Boid {
   }
 
   void evade(Boid target) {
-    //line(pos.x, pos.y, pred_pos(target).x, pred_pos(target).y);
+    if (debug)
+      line(pos.x, pos.y, pred_pos(target).x, pred_pos(target).y);
     flee(pred_pos(target), 1);
   }
 
@@ -72,10 +70,9 @@ class Boid {
 
     for (Boid b : l_boids) {
       float distance = PVector.dist(b.pos, pos);
-      if ( distance < separation && distance > 0 && distance < 250) {
+      if ( distance < separation && distance > 0) {
         PVector dist = PVector.sub(b.pos, pos);
         dist.normalize();
-        //dist.div(distance);
         steer.add(dist);
         count++;
       }

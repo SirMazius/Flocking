@@ -1,6 +1,5 @@
 class World { 
 
-
   Boid a, b, c;
 
   World() {
@@ -118,13 +117,13 @@ class World {
 
     //Borde superior
     PVector up = new PVector(b.pos.x, height/4);
-    if (PVector.dist(up, b.pos) < 10)
-      b.add_force(PVector.sub(b.pos, up).setMag(50));
+    if (PVector.dist(up, b.pos) < 20)
+      b.add_force(PVector.sub(b.pos, up).setMag(100));
 
     //Borde inferior
     PVector down = new PVector(b.pos.x, height - height/4);
-    if (PVector.dist(down, b.pos) < 10)
-      b.add_force(PVector.sub(b.pos, down).setMag(50));
+    if (PVector.dist(down, b.pos) < 20)
+      b.add_force(PVector.sub(b.pos, down).setMag(100));
   }
 
   void add_boid(ArrayList<Boid> l_boids, PVector _pos) {
@@ -138,6 +137,8 @@ class World {
   }
 
   void seek() {
+    fill(255);
+    text("SEEK", 30, 40);
     a.seek(new PVector(mouseX, mouseY), 1);
     fill(100);
     ellipse(mouseX, mouseY, 30, 30);
@@ -147,6 +148,8 @@ class World {
   }
 
   void flee() {
+    fill(255);
+    text("FLEE", 30, 40);
     a.flee(new PVector(mouseX, mouseY), 1);
     fill(100);
     ellipse(mouseX, mouseY, 30, 30);
@@ -156,6 +159,8 @@ class World {
   }
 
   void pursue() {
+    fill(255);
+    text("PURSUE", 30, 40);
     a.seek(new PVector(mouseX, mouseY), 1);
     fill(100);
     ellipse(mouseX, mouseY, 30, 30);
@@ -170,6 +175,8 @@ class World {
   }
 
   void evade() {
+    fill(255);
+    text("EVADE", 30, 40);
     a.seek(new PVector(mouseX, mouseY), 1);
     fill(100);
     ellipse(mouseX, mouseY, 30, 30);
@@ -184,6 +191,8 @@ class World {
   }
 
   void arrive() {
+    fill(255);
+    text("ARRIVE", 30, 40);
     c.arrive(new PVector(mouseX, mouseY));
     fill(100);
     ellipse(mouseX, mouseY, 30, 30);
@@ -192,6 +201,8 @@ class World {
   }
 
   void flock_simple() {
+    fill(255);
+    text("SIMPLE FLOCK", 30, 40);
     for (Boid b : l_boids_c) {
       b.flock(l_boids_c);
       b.update();
@@ -201,6 +212,8 @@ class World {
   }
 
   void flock_objectives() {
+    fill(255);
+    text("FLOCK OBJECTIVES", 30, 40);
 
     strokeWeight(10);
     noFill();
@@ -245,6 +258,7 @@ class World {
   }
 
   void flock_corridor() {
+    text("FLOCK CORRIDOR", 30, 40);
     strokeWeight(10);
     stroke(0);
     line(0, height/4, width, height/4);
