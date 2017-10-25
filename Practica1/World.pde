@@ -4,8 +4,8 @@ class World {
 
   World() {
     a = new Boid(300, 300, new PVector(0, 0), 35, 40, 8);
-    b = new Boid(600, 300, new PVector(0, 0), 20, 40, 8);
-    c = new Boid(300, 300, new PVector(0, 0), 25, 50, 8);
+    b = new Boid(600, 300, new PVector(0, 0), 45, 60, 8);
+    c = new Boid(300, 300, new PVector(0, 0), 15, 50, 8);
 
     l_boids_a = new ArrayList<Boid>();
     l_boids_b = new ArrayList<Boid>();
@@ -42,64 +42,7 @@ class World {
       flock_corridor();
       break;
     }
-    //a.evade(b);
-    ////a.pred_pos(b);
-    //b.seek(target,1);
-    //bounders(b);
-    //bounders(a);
-    //b.update();
-    //a.update();
-    //for (int i = 0; i < l_boids_a.size(); i++) {
-    //  if (l_boids_a.get(i) != null) {
-    //    Boid a = l_boids_a.get(i);
-    //    a.flock(l_boids_a);
-    //    a.seek(target_a, 1.25);
-    //    a.separate(10, l_boids_b);
-    //    corridor(a);
-    //    a.update();
-    //    //bounders(a);
-
-    //    if (PVector.dist(a.pos, target_a) < 20) 
-    //      l_boids_a.remove(a);
-    //  }
-    //}
-
-    //for (int i = 0; i < l_boids_b.size(); i++) {
-    //  if (l_boids_b.get(i) != null) {
-    //    Boid b = l_boids_b.get(i);
-    //    b.flock(l_boids_b);
-    //    b.seek(target_b, 1.25);
-    //    b.separate(10, l_boids_a);
-    //    corridor(b);
-    //    b.update();
-    //    //bounders(b);
-
-    //    if (PVector.dist(b.pos, target_b) < 20) 
-    //      l_boids_b.remove(b);
-    //  }
-    //}
   }
-
-  void display() {
-
-    //for (Boid a : l_boids_a) {
-    //  stroke(10);
-    //  a.display();
-    //}
-
-    //for (Boid b : l_boids_b) {
-    //  fill(255);
-    //  b.display();
-    //}
-
-    //Dibuja el pasillo
-    //
-    //fill(0);
-    //a.display();
-    //fill(255);
-    //b.display();
-  }
-
   void bounders(Boid b) {
     if (b.pos.x < 0) {
       b.pos.x = width;
@@ -211,6 +154,7 @@ class World {
     for (Boid b : l_boids_c) {
       b.flock(l_boids_c);
       b.update();
+      bounders(b);
       fill(50);
       b.display();
     }
@@ -234,7 +178,6 @@ class World {
         a.flock(l_boids_a);
         a.seek(target_a, 2);
         a.separate(10, l_boids_b);
-        //corridor(a);
         a.update();
         bounders(a);
         a.display();
@@ -249,7 +192,7 @@ class World {
         b.flock(l_boids_b);
         b.seek(target_b, 1.25);
         b.separate(10, l_boids_a);
-        //corridor(b);
+
         b.update();
         bounders(b);
         noStroke();

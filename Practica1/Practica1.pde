@@ -1,4 +1,5 @@
-float dt = 0.1;boolean debug;
+float dt = 0.1;
+boolean debug;
 PVector target_a;
 PVector target_b;
 ArrayList<Boid> l_boids_a;
@@ -21,7 +22,6 @@ void setup() {
 void draw() {
   background(55);
   a.update();
-  a.display();
   textSize(20);
 }
 
